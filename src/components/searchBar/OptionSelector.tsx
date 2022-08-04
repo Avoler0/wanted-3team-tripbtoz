@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useReducer, useState } from 'react';
 import styled from 'styled-components';
 import UserSingle from '../../assets/UserSingle';
 import { theme } from '../../styles/theme';
@@ -58,7 +58,7 @@ export default function OptionSelector({}: OptionSelectorProps) {
       </Printer>
       {isOpen && (
         <>
-          <Selecter onBlur={closeSelector}>
+          <Selecter>
             <Row>
               <Label>성인</Label>
               <CountWrapper>
@@ -116,6 +116,7 @@ const Column = styled.div`
   justify-content: center;
 `;
 const Span = styled.span<{ styledColor?: string; thin?: boolean; smallFont?: boolean }>`
+  pointer-events: none;
   ${(props) => props.styledColor && `color:${props.styledColor}`};
   ${(props) => props.thin && `font-weight:300`};
   ${(props) => props.smallFont && `font-size: 0.7rem`};
