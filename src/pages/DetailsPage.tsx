@@ -8,6 +8,7 @@ import useHotels from '../hooks/useHotels';
 import { useAppSelector } from '../hooks/reduxHooks';
 import { getLocalStorage, setLocalStorage } from '../utils/storage';
 import { areIntervalsOverlapping } from 'date-fns';
+import { UserDataType } from '../interfaces/types';
 
 export default function DetailsPage() {
   const { getHotelInfo, hotelInfo, isLoading } = useHotels();
@@ -23,7 +24,7 @@ export default function DetailsPage() {
   useEffect(() => {
     const currentReservationHotels = getLocalStorage('userHotels', []);
     const isReservation = !!currentReservationHotels.filter(
-      (reservationHotel: any) =>
+      (reservationHotel: UserDataType) =>
         reservationHotel.hotelName === hotelInfo.hotel_name &&
         areIntervalsOverlapping(
           { start: new Date(reservationInfo.checkInDate), end: new Date(reservationInfo.checkOutDate) },
