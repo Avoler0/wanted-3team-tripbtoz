@@ -7,6 +7,7 @@ import { MOBILE_BREAKPOINT, TABLET_BREAKPOINT } from '../constants/constants';
 import useHotels from '../hooks/useHotels';
 import { useAppSelector } from '../hooks/reduxHooks';
 import { getLocalStorage, setLocalStorage } from '../utils/storage';
+import { areIntervalsOverlapping } from 'date-fns';
 
 export default function DetailsPage() {
   const { getHotelInfo, hotelInfo, isLoading } = useHotels();
@@ -22,12 +23,17 @@ export default function DetailsPage() {
   useEffect(() => {
     const currentReservationHotels = getLocalStorage('userHotels', []);
     const isReservation = !!currentReservationHotels.filter(
-      (reservationHotel: any) => reservationHotel.hotelName === hotelInfo.hotel_name,
+      (reservationHotel: any) =>
+        reservationHotel.hotelName === hotelInfo.hotel_name &&
+        areIntervalsOverlapping(
+          { start: new Date(reservationInfo.checkInDate), end: new Date(reservationInfo.checkOutDate) },
+          { start: new Date(reservationHotel.checkInDate), end: new Date(reservationHotel.checkOutDate) },
+        ),
     ).length;
 
     if (!isReservation) return;
 
-    alert('이미 예약되어 있는 호텔입니다!');
+    alert('선택하신 기간 사이에 예약이 불가능한 날이 있습니다!');
     navigate('/');
   }, [hotelInfo]);
 
