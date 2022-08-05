@@ -16,7 +16,20 @@ export default function DetailsPage() {
 
   useEffect(() => {
     hotelName && getHotelInfo(hotelName);
+    console.log(hotelInfo);
   }, [hotelName]);
+
+  useEffect(() => {
+    const currentReservationHotels = getLocalStorage('userHotels', []);
+    const isReservation = !!currentReservationHotels.filter(
+      (reservationHotel: any) => reservationHotel.hotelName === hotelInfo.hotel_name,
+    ).length;
+
+    if (!isReservation) return;
+
+    alert('이미 예약되어 있는 호텔입니다!');
+    navigate('/');
+  }, [hotelInfo]);
 
   useEffect(() => {
     if (isLoading || Object.values(hotelInfo).length) return;
