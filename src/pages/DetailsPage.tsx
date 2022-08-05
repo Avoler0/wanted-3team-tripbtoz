@@ -18,7 +18,6 @@ export default function DetailsPage() {
 
   useEffect(() => {
     hotelName && getHotelInfo(hotelName);
-    console.log(hotelInfo);
   }, [hotelName]);
 
   useEffect(() => {
